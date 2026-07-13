@@ -127,7 +127,7 @@ function Landing() {
     <div className="min-h-screen bg-black">
       
       {/* Hero Section */}
-      <section className="relative min-h-screen pt-16 sm:pt-20 pb-8 px-4 sm:px-6 lg:px-8 overflow-hidden flex items-center">
+      <section className="relative min-h-screen pt-20 sm:pt-24 md:pt-28 pb-12 px-3 sm:px-6 lg:px-8 overflow-hidden flex items-center">
         {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-600 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-pulse"></div>
@@ -137,36 +137,36 @@ function Landing() {
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-start lg:items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-10 items-start lg:items-center">
             
             {/* Left Side - Java Terminal */}
-            <div className="w-full">
+            <div className="w-full px-1 sm:px-0">
               {/* Terminal with fixed height and scroll */}
               <div className="relative">
                 {/* Terminal Header */}
-                <div className="flex items-center gap-2 bg-gray-900/90 rounded-t-xl px-3 sm:px-4 py-2 border border-gray-800/50 border-b-0">
-                  <div className="flex gap-1.5 sm:gap-2">
-                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500"></div>
-                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500"></div>
+                <div className="flex items-center gap-1.5 sm:gap-2 bg-gray-900/90 rounded-t-xl px-2 sm:px-4 py-1.5 sm:py-2 border border-gray-800/50 border-b-0">
+                  <div className="flex gap-1 sm:gap-1.5">
+                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-red-500"></div>
+                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-yellow-500"></div>
+                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-green-500"></div>
                   </div>
                   <div className="flex-1 text-center">
-                    <span className="text-[10px] sm:text-xs text-gray-400 font-mono flex items-center justify-center gap-1 sm:gap-2">
-                      <FaCoffee className="text-orange-400 text-[10px] sm:text-xs" />
+                    <span className="text-[8px] sm:text-[10px] md:text-xs text-gray-400 font-mono flex items-center justify-center gap-0.5 sm:gap-1">
+                      <FaCoffee className="text-orange-400 text-[8px] sm:text-[10px] md:text-xs" />
                       WhoIsTariq.java
                     </span>
                   </div>
-                  <div className="w-12 sm:w-16"></div>
+                  <div className="w-8 sm:w-12 md:w-16"></div>
                 </div>
                 
                 {/* Terminal Content - FIXED HEIGHT WITH AUTO-SCROLL */}
                 <div 
                   ref={terminalContentRef}
                   className="bg-gray-900/95 backdrop-blur-sm rounded-b-xl border border-gray-800/50 border-t-0 overflow-y-auto custom-scrollbar" 
-                  style={{ height: '380px', maxHeight: '380px' }}
+                  style={{ height: '320px', maxHeight: '320px' }}
                 >
-                  <div className="p-3 sm:p-5 font-mono">
-                    <div className="text-[10px] sm:text-xs leading-relaxed">
+                  <div className="p-2 sm:p-4 md:p-5 font-mono">
+                    <div className="text-[8px] sm:text-[10px] md:text-xs leading-relaxed">
                       {/* Java Code Lines - with safety check */}
                       {codeLines && codeLines.length > 0 ? (
                         codeLines.map((line, index) => (
@@ -181,25 +181,25 @@ function Landing() {
                       {/* Compiling Animation */}
                       {isRunning && codeLines.length < javaCode.length && (
                         <div className="flex items-center gap-2 text-yellow-300 mt-1">
-                          <FaSpinner className="animate-spin text-[10px] sm:text-xs" />
-                          <span className="text-[10px] sm:text-xs font-medium">Compiling...</span>
+                          <FaSpinner className="animate-spin text-[8px] sm:text-[10px] md:text-xs" />
+                          <span className="text-[8px] sm:text-[10px] md:text-xs font-medium">Compiling...</span>
                         </div>
                       )}
 
                       {/* Description Output */}
                       {!isRunning && showContent && (
                         <div className="mt-1">
-                          <div className="text-green-400 text-[10px] sm:text-xs mb-2 font-bold">
+                          <div className="text-green-400 text-[8px] sm:text-[10px] md:text-xs mb-1 sm:mb-2 font-bold">
                             ✓ Build Successful!
                           </div>
-                          <pre className="text-gray-200 whitespace-pre-wrap font-mono text-[10px] sm:text-xs leading-relaxed">
+                          <pre className="text-gray-200 whitespace-pre-wrap font-mono text-[8px] sm:text-[10px] md:text-xs leading-relaxed">
                             {typingText.split('\n').map((line, index) => {
                               if (line.includes('⭐')) {
                                 return <div key={`desc-${index}`} className="text-yellow-400 font-bold">{line}</div>;
                               } else if (line.includes('Hello!')) {
-                                return <div key={`desc-${index}`} className="text-purple-300 font-bold text-sm sm:text-base">{line}</div>;
+                                return <div key={`desc-${index}`} className="text-purple-300 font-bold text-[10px] sm:text-sm md:text-base">{line}</div>;
                               } else if (line.includes('Full Stack')) {
-                                return <div key={`desc-${index}`} className="text-purple-400 font-bold text-sm sm:text-base">{line}</div>;
+                                return <div key={`desc-${index}`} className="text-purple-400 font-bold text-[10px] sm:text-sm md:text-base">{line}</div>;
                               } else if (line.includes('Crafting')) {
                                 return <div key={`desc-${index}`} className="text-gray-300">{line}</div>;
                               } else if (line.includes('Stats')) {
@@ -207,12 +207,12 @@ function Landing() {
                               } else if (line.includes('•')) {
                                 return <div key={`desc-${index}`} className="text-green-300 font-medium">{line}</div>;
                               } else if (line === '') {
-                                return <div key={`desc-${index}`} className="h-1"></div>;
+                                return <div key={`desc-${index}`} className="h-0.5 sm:h-1"></div>;
                               } else {
                                 return <div key={`desc-${index}`} className="text-gray-300">{line}</div>;
                               }
                             })}
-                            {showCursor && <span className="inline-block w-1.5 h-3 sm:w-2 sm:h-4 bg-purple-400 ml-0.5"></span>}
+                            {showCursor && <span className="inline-block w-1 h-2 sm:w-1.5 sm:h-3 md:w-2 md:h-4 bg-purple-400 ml-0.5"></span>}
                           </pre>
                         </div>
                       )}
@@ -223,21 +223,21 @@ function Landing() {
 
               {/* CTA Buttons - Show after loading */}
               {!isRunning && showContent && isComplete && (
-                <div className="mt-4 space-y-3">
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center lg:justify-start">
                     <button 
                       onClick={scrollToProjects}
-                      className="group inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-2.5 sm:py-3.5 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-semibold rounded-xl hover:shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300 border border-purple-400/30 text-sm sm:text-base"
+                      className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3.5 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-semibold rounded-xl hover:shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300 border border-purple-400/30 text-xs sm:text-sm md:text-base"
                     >
                       View My Work
-                      <FaArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
+                      <FaArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
                     </button>
                     <a 
                       href={myCV} 
                       download="Tariq_Resum.pdf"
-                      className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-2.5 sm:py-3.5 bg-purple-500/10 backdrop-blur-sm border border-purple-500/30 text-white font-semibold rounded-xl hover:bg-purple-500/20 hover:border-purple-500/60 transition-all duration-300 text-sm sm:text-base"
+                      className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3.5 bg-purple-500/10 backdrop-blur-sm border border-purple-500/30 text-white font-semibold rounded-xl hover:bg-purple-500/20 hover:border-purple-500/60 transition-all duration-300 text-xs sm:text-sm md:text-base"
                     >
-                      <FaDownload className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      <FaDownload className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
                       Download My CV
                     </a>
                   </div>
@@ -246,20 +246,20 @@ function Landing() {
             </div>
 
             {/* Right Side - Photo */}
-            <div className="w-full flex justify-center lg:justify-end">
-              <div className={`relative group w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[400px] transition-all duration-1000 transform ${
+            <div className="w-full flex justify-center lg:justify-end px-1 sm:px-0">
+              <div className={`relative group w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] lg:max-w-[400px] transition-all duration-1000 transform ${
                 showPhoto ? 'opacity-100 scale-100 translate-x-0' : 'opacity-0 scale-50 translate-x-20'
               }`}>
-                <div className={`absolute -inset-1 bg-gradient-to-r from-purple-500 via-purple-400 to-purple-600 rounded-3xl blur transition-all duration-1000 ${
+                <div className={`absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-purple-500 via-purple-400 to-purple-600 rounded-2xl sm:rounded-3xl blur transition-all duration-1000 ${
                   showPhoto ? 'opacity-60 group-hover:opacity-100' : 'opacity-0'
                 } animate-spin-slow`}></div>
                 
-                <div className="relative bg-black/80 backdrop-blur-sm rounded-3xl p-1.5 sm:p-2 border border-purple-500/40">
-                  <div className="relative overflow-hidden rounded-2xl" style={{ height: '380px' }}>
+                <div className="relative bg-black/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-1 sm:p-1.5 md:p-2 border border-purple-500/40">
+                  <div className="relative overflow-hidden rounded-xl sm:rounded-2xl" style={{ height: '320px' }}>
                     <img 
                       src={myphoto}
                       alt="Tariq Omari"
-                      className="w-full h-full object-cover rounded-2xl"
+                      className="w-full h-full object-cover rounded-xl sm:rounded-2xl"
                     />
                     
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
@@ -267,11 +267,11 @@ function Landing() {
                     {/* Sparkles */}
                     {showPhoto && (
                       <>
-                        <div className="absolute top-10 left-10 w-2 h-2 bg-yellow-400 rounded-full animate-ping"></div>
-                        <div className="absolute top-20 right-16 w-1.5 h-1.5 bg-purple-400 rounded-full animate-ping delay-300"></div>
-                        <div className="absolute bottom-20 left-12 w-2 h-2 bg-blue-400 rounded-full animate-ping delay-700"></div>
-                        <div className="absolute bottom-10 right-10 w-1.5 h-1.5 bg-pink-400 rounded-full animate-ping delay-500"></div>
-                        <div className="absolute top-1/2 right-8 w-1.5 h-1.5 bg-green-400 rounded-full animate-ping delay-1000"></div>
+                        <div className="absolute top-8 left-8 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-yellow-400 rounded-full animate-ping"></div>
+                        <div className="absolute top-16 right-12 w-1 h-1 sm:w-1.5 sm:h-1.5 bg-purple-400 rounded-full animate-ping delay-300"></div>
+                        <div className="absolute bottom-16 left-10 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full animate-ping delay-700"></div>
+                        <div className="absolute bottom-8 right-8 w-1 h-1 sm:w-1.5 sm:h-1.5 bg-pink-400 rounded-full animate-ping delay-500"></div>
+                        <div className="absolute top-1/2 right-6 w-1 h-1 sm:w-1.5 sm:h-1.5 bg-green-400 rounded-full animate-ping delay-1000"></div>
                       </>
                     )}
                   </div>
@@ -291,7 +291,7 @@ function Landing() {
         
         /* Custom Scrollbar Styles */
         .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
+          width: 4px;
         }
         
         .custom-scrollbar::-webkit-scrollbar-track {
@@ -317,11 +317,11 @@ function Landing() {
         
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
+          50% { transform: translateY(-6px); }
         }
         @keyframes float-delay {
           0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
+          50% { transform: translateY(-6px); }
         }
         .animate-spin-slow {
           animation: spin-slow 3s linear infinite;
