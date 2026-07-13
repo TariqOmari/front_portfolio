@@ -19,10 +19,10 @@ function Landing() {
   const [isRunning, setIsRunning] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
-  const [currentLine, setCurrentLine] = useState(0);
   const [typingText, setTypingText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
   const [isComplete, setIsComplete] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   
   // Ref for auto-scrolling
   const terminalContentRef = useRef(null);
@@ -51,7 +51,7 @@ function Landing() {
     '📊 Stats:',
     '• 4+ Years Experience',
     '• 15+ Projects Delivered',
-    '• 30+ Happy Clients',
+    '• 10+ Happy Clients',
   ];
 
   // Auto-scroll to bottom whenever content changes
@@ -61,64 +61,60 @@ function Landing() {
     }
   }, [codeLines, typingText]);
 
+  // Main animation effect - runs once on mount
   useEffect(() => {
-    // Only run once on mount
-    if (isComplete) return;
+    // Prevent multiple starts
+    if (hasStarted || isComplete) return;
+    setHasStarted(true);
 
-    let interval;
-    let timeout;
+    let lineInterval, descInterval, cursorInterval, timeout1, timeout2;
 
-    if (isRunning && currentLine < javaCode.length) {
-      interval = setInterval(() => {
-        setCurrentLine(prev => {
-          const next = prev + 1;
-          // Only add the line if we haven't added it before
-          if (next <= javaCode.length) {
-            setCodeLines(prevLines => {
-              // Check if line already exists to prevent duplicates
-              if (prevLines.length >= next) {
-                return prevLines;
-              }
-              return [...prevLines, javaCode[next - 1]];
-            });
-          }
+    // Start adding code lines
+    let lineIndex = 0;
+    lineInterval = setInterval(() => {
+      if (lineIndex < javaCode.length) {
+        setCodeLines(prev => [...prev, javaCode[lineIndex]]);
+        lineIndex++;
+      } else {
+        clearInterval(lineInterval);
+        // Code is fully written, wait then show description
+        timeout1 = setTimeout(() => {
+          setIsRunning(false);
+          setShowContent(true);
           
-          if (next >= javaCode.length) {
-            clearInterval(interval);
-            setIsRunning(false);
-            
-            timeout = setTimeout(() => {
-              setShowContent(true);
-              let descIndex = 0;
-              const descInterval = setInterval(() => {
-                if (descIndex < descriptionLines.length) {
-                  setTypingText(prev => prev + descriptionLines[descIndex] + '\n');
-                  descIndex++;
-                } else {
-                  clearInterval(descInterval);
-                  setIsComplete(true);
-                  setTimeout(() => {
-                    setShowPhoto(true);
-                  }, 500);
-                }
-              }, 80);
-            }, 500);
-          }
-          return next;
-        });
-      }, 300);
-    }
+          // Start typing description
+          let descIndex = 0;
+          descInterval = setInterval(() => {
+            if (descIndex < descriptionLines.length) {
+              setTypingText(prev => prev + descriptionLines[descIndex] + '\n');
+              descIndex++;
+            } else {
+              clearInterval(descInterval);
+              // Description complete, show photo
+              timeout2 = setTimeout(() => {
+                setShowPhoto(true);
+                setIsComplete(true);
+              }, 500);
+            }
+          }, 80);
+        }, 500);
+      }
+    }, 300);
 
-    const cursorInterval = setInterval(() => {
+    // Cursor blinking
+    cursorInterval = setInterval(() => {
       setShowCursor(prev => !prev);
     }, 500);
 
+    // Cleanup
     return () => {
-      clearInterval(interval);
+      clearInterval(lineInterval);
+      clearInterval(descInterval);
       clearInterval(cursorInterval);
-      clearTimeout(timeout);
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
     };
-  }, [isRunning, currentLine, isComplete]);
+  }, []); // Empty dependency array - runs once
 
   const scrollToProjects = () => {
     const projectsSection = document.getElementById('projects');
@@ -171,15 +167,19 @@ function Landing() {
                 >
                   <div className="p-3 sm:p-5 font-mono">
                     <div className="text-[10px] sm:text-xs leading-relaxed">
-                      {/* Java Code Lines */}
-                      {codeLines.map((line, index) => (
-                        <div key={`line-${index}-${line.line}`} className={`${line.color} font-medium`}>
-                          {line.line}
-                        </div>
-                      ))}
+                      {/* Java Code Lines - with safety check */}
+                      {codeLines && codeLines.length > 0 ? (
+                        codeLines.map((line, index) => (
+                          <div key={`line-${index}`} className={`${line?.color || 'text-gray-400'} font-medium`}>
+                            {line?.line || ''}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-gray-500">// Initializing...</div>
+                      )}
                       
                       {/* Compiling Animation */}
-                      {isRunning && currentLine < javaCode.length && (
+                      {isRunning && codeLines.length < javaCode.length && (
                         <div className="flex items-center gap-2 text-yellow-300 mt-1">
                           <FaSpinner className="animate-spin text-[10px] sm:text-xs" />
                           <span className="text-[10px] sm:text-xs font-medium">Compiling...</span>
@@ -222,7 +222,7 @@ function Landing() {
               </div>
 
               {/* CTA Buttons - Show after loading */}
-              {!isRunning && showContent && (
+              {!isRunning && showContent && isComplete && (
                 <div className="mt-4 space-y-3">
                   <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                     <button 
